@@ -9,3 +9,8 @@
 
 # Undo-tree save-files
 *.~undo-tree
+
+# Emacs
+.cache/
+.emacs.d/elpa/
+.emacs.d/el-get/
