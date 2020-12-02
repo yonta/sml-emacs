@@ -1,8 +1,8 @@
 ;;; init.el --- Standard ML environment in Emacs     -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2020  iris
+;; Copyright (C) 2020 Keita SAITOU
 
-;; Author: iris <kei@iris>
+;; Author: Keita SAITOU <keita44.f4@gmail.com>
 ;; Keywords: tools, languages
 
 ;; This program is distribute under MIT license.
@@ -10,11 +10,79 @@
 
 ;;; Commentary:
 
-;;
+;; This is mlton/.emacs.d/init.el which requires MLton compiler >= v20130715.
+;; If you do not have MLton compiler in the environment and have SML# compiler,
+;; you should use smlsharp/.emacs.d/init.el instead of this.
 
 ;;; Code:
 
+;; package.el
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(eval-and-compile (package-initialize))
 
+;; leaf.el
+;; https://github.com/conao3/leaf.el
+(unless (package-installed-p 'leaf)
+  (package-refresh-contents)
+  (package-install 'leaf))
+(eval-and-compile
+  (leaf leaf-keywords :ensure t
+    :init
+    (leaf el-get :ensure t)
+    :config
+    (leaf-keywords-init)))
+
+;; company-mode
+;; https://company-mode.github.io/
+(leaf company :ensure t
+  ;; :hook (after-init-hook . global-company-mode)
+  :global-minor-mode global-company-mode
+  :custom
+  (company-selection-wrap-around . t)      ; 補完候補で上下をループする
+  (company-tooltip-align-annotations . t)) ; 補完リストの型を右揃えで整列する
+
+;; company-quickhelp
+;; https://github.com/company-mode/company-quickhelp
+(leaf company-quickhelp :ensure t
+  :config
+  (company-quickhelp-mode))
+
+;; flycheck
+;; https://www.flycheck.org/en/latest/
+(leaf flycheck :ensure t
+  :defvar flycheck-checkers
+  :global-minor-mode global-flycheck-mode)
+
+;; flycheck-pos-tip
+;; https://github.com/flycheck/flycheck-pos-tip
+(leaf flycheck-pos-tip :ensure t
+  :after flycheck
+  :custom
+  (flycheck-pos-tip-timeout . 0) ; pos-tipを自動で消さない
+  :config
+  (flycheck-pos-tip-mode))
+
+;; sml-mode
+;; https://www.smlnj.org/doc/Emacs/sml-mode.html
+(leaf sml-mode :ensure t)
+
+;; company-mlton
+;; https://github.com/MatthewFluet/company-mlton
+(leaf company-mlton
+    :el-get (company-mlton
+             :url "https://github.com/MatthewFluet/company-mlton.git")
+    :hook
+    (sml-mode-hook . company-mlton-init))
+
+;; flycheck-mlton
+;; https://gist.github.com/yonta/80c938a54f4d14a1b75146e9c0b76fc2
+(leaf flycheck-mlton
+  :el-get gist:80c938a54f4d14a1b75146e9c0b76fc2:flycheck-mlton
+  :after sml-mode
+  :require t
+  :config
+  (add-to-list 'flycheck-checkers 'mlton))
 
 (provide 'init)
 ;;; init.el ends here
