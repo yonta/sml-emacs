@@ -10,9 +10,10 @@
 
 ;;; Commentary:
 
-;; This is mlton/.emacs.d/init.el which requires MLton compiler >= v20130715.
-;; If you do not have MLton compiler in the environment and have SML# compiler,
-;; you should use smlsharp/.emacs.d/init.el instead of this.
+;; This is Emacs configuration file to develop to Standard ML code.
+;; It requires latest SML# compiler or MLton compiler >= v20130715.
+;; If you use SML# compiler to flycheck, you need not only .sml file
+;; but also .smi file.
 
 ;;; Code:
 
@@ -75,9 +76,19 @@
     :hook
     (sml-mode-hook . company-mlton-init))
 
+;; flycheck-smlsharp
+;; https://github.com/yonta/flycheck-smlsharp
+(leaf flycheck-smlsharp
+  :if (executable-find "smlsharp")
+  :el-get (flycheck-smlsharp
+           :url "https://github.com/yonta/flycheck-smlsharp.git")
+  :after sml-mode
+  :require t)
+
 ;; flycheck-mlton
 ;; https://gist.github.com/yonta/80c938a54f4d14a1b75146e9c0b76fc2
 (leaf flycheck-mlton
+  :if (executable-find "mlton")
   :el-get gist:80c938a54f4d14a1b75146e9c0b76fc2:flycheck-mlton
   :after sml-mode
   :require t
