@@ -52,7 +52,7 @@
 ;; flycheck
 ;; https://www.flycheck.org/en/latest/
 (leaf flycheck :ensure t
-  :defvar flycheck-checkers
+  :defvar flycheck-checkers flycheck-checker
   :global-minor-mode global-flycheck-mode)
 
 ;; flycheck-pos-tip
@@ -66,7 +66,9 @@
 
 ;; sml-mode
 ;; https://www.smlnj.org/doc/Emacs/sml-mode.html
-(leaf sml-mode :ensure t)
+(leaf sml-mode :ensure t
+  ;; :hook (sml-mode-hook . (lambda () (setq-local flycheck-checker 'smlsharp)))
+  )
 
 ;; company-mlton
 ;; https://github.com/MatthewFluet/company-mlton
