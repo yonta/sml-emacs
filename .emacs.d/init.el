@@ -114,5 +114,10 @@
   (sp-local-pair 'inferior-sml-mode "'" nil :actions nil)
   (sp-local-pair 'inferior-sml-mode "`" nil :actions nil))
 
+;; dumb-jump
+;; https://github.com/jacktasia/dumb-jump
+(leaf dumb-jump :ensure t
+  :hook (xref-backend-functions . dumb-jump-xref-activate))
+
 (provide 'init)
 ;;; init.el ends here
