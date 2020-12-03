@@ -37,7 +37,6 @@
 ;; company-mode
 ;; https://company-mode.github.io/
 (leaf company :ensure t
-  ;; :hook (after-init-hook . global-company-mode)
   :global-minor-mode global-company-mode
   :custom
   (company-selection-wrap-around . t)      ; 補完候補で上下をループする
