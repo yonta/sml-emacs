@@ -101,5 +101,18 @@
   :config
   (add-to-list 'flycheck-checkers 'mlton))
 
+;; smartparens
+;; https://github.com/Fuco1/smartparens
+(leaf smartparens :ensure t
+  :defun sp-local-pair
+  :global-minor-mode smartparens-global-mode
+  :config
+  (sp-local-pair 'sml-mode "(*" "*)")
+  (sp-local-pair 'sml-mode "'" nil :actions nil)
+  (sp-local-pair 'sml-mode "`" nil :actions nil)
+  (sp-local-pair 'inferior-sml-mode "(*" "*)")
+  (sp-local-pair 'inferior-sml-mode "'" nil :actions nil)
+  (sp-local-pair 'inferior-sml-mode "`" nil :actions nil))
+
 (provide 'init)
 ;;; init.el ends here
