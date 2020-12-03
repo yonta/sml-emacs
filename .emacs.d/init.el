@@ -37,6 +37,7 @@
 ;; company-mode
 ;; https://company-mode.github.io/
 (leaf company :ensure t
+  :defvar company-backends
   :global-minor-mode global-company-mode
   :custom
   (company-selection-wrap-around . t)      ; 補完候補で上下をループする
@@ -72,10 +73,14 @@
 ;; company-mlton
 ;; https://github.com/MatthewFluet/company-mlton
 (leaf company-mlton
-    :el-get (company-mlton
-             :url "https://github.com/MatthewFluet/company-mlton.git")
-    :hook
-    (sml-mode-hook . company-mlton-init))
+  :el-get (company-mlton
+           :url "https://github.com/MatthewFluet/company-mlton.git")
+  :config
+  (push
+   '(company-mlton-keyword company-mlton-basis :with company-dabbrev-code)
+   company-backends)
+  :hook
+  (sml-mode-hook . company-mlton-basis-autodetect))
 
 ;; flycheck-smlsharp
 ;; https://github.com/yonta/flycheck-smlsharp
