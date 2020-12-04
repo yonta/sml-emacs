@@ -68,7 +68,15 @@
 ;; https://www.smlnj.org/doc/Emacs/sml-mode.html
 (leaf sml-mode :ensure t
   ;; :hook (sml-mode-hook . (lambda () (setq-local flycheck-checker 'smlsharp)))
-  )
+  :defun sml-prog-proc-proc sml-prog-proc-send-string
+  :init
+  (defun sml-prog-proc-send-region-by-string (begin end)
+    (interactive "r")
+    (let ((proc (sml-prog-proc-proc))
+          (code (buffer-substring begin end)))
+      (sml-prog-proc-send-string proc code)))
+  :bind (:sml-mode-map
+         ("C-c C-r" . sml-prog-proc-send-region-by-string)))
 
 ;; company-mlton
 ;; https://github.com/MatthewFluet/company-mlton
